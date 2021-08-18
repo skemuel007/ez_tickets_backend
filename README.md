@@ -58,11 +58,11 @@ cd ez_tickets_backend
 # Make it your own
 rm -rf .git && git init
 
-# Copy example.env and create your own .env file in configs folder
-cp .env.example configs/.env
+# Copy example.env and create your own .env file in envs folder
+cp .env.example envs/.env
 
-# Move into the configs dir
-cd configs
+# Move into the envs dir
+cd envs
 
 # Edit .env file and add your mysql username, password and db name, host,
 # port, jwt_secret, sendgrid api key and sender email
@@ -78,7 +78,7 @@ cp .env.dev .env.production
 # e.g. Setting NODE_ENV=production is going to load the .env.production file
 
 # Add a gitignore to ignore node_modules and your .env file
-echo -e 'node_modules \n configs \n' >> .gitignore
+echo -e 'node_modules \n envs \n' >> .gitignore
 ```
 
 #### 2. Setup MySQL database
@@ -101,14 +101,30 @@ npm run dev
 npm run production
 ```
 
-#### (Optional) Setup Postman API
+### :arrows_counterclockwise: Setup CI (Github Actions)
+
+If you want to run the github testing and PR labelling workflows in the CI then:
+
+Create the following repository secrets:
+  * CONFIG_VARS: value should be the following .env file variables
+   ```
+   DB_HOST= db_localhost
+   DB_USER= db_username
+   DB_PASS= db_password
+   DB_DATABASE= db_name
+   ```
+  * SENDGRID_API_KEY: value should be your .env file variable => sendgrid_api_key
+  * SENDGRID_SENDER: value should be all your .env file variable => from_email
+  * SECRET_JWT: value should be all your .env file variables => your_secret
+
+### :man_astronaut: (Optional) Setup Postman API
 
 If you want to quickly setup the endpoints for testing:
 
 * Go to Postman to import backup
 * Upload the schema_backup or unzip postman_collections_backup.zip and upload the folder
 
-### :notepad: Important Notes
+### :closed_book: Important Notes
 
 - There are two types of users possible (admin, api_user)
 - Most of the POST/PATCH/DELETE endpoints are forbidden to the `api_user` and only `admin` can use them. So make sure you use the `token` from an **admin account login** for `admin` access.
